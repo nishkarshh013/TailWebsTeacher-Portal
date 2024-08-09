@@ -1,0 +1,14 @@
+<div id="student-form" >
+  <%= form_with(model: @student, url: teacher_student_path, local: false) do |form| %>
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+    <%= form.hidden_field :student_id, value: @student.id if @student.present? %>
+    <%= form.fields_for :subjects do |subject_form| %>
+      <%= subject_form.label :Subject_name %>
+      <%= subject_form.text_field :name %>
+      <%= subject_form.label :marks %>
+      <%= subject_form.number_field :marks %>
+    <% end %>
+    <%= form.submit "Add Student" %>
+  <% end %>
+</div>

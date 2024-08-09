@@ -1,0 +1,41 @@
+<h1>Welcome, <%= @teacher.name %></h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Subject</th>
+      <th>Marks</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @students.each do |student| %>
+      <%= turbo_frame_tag dom_id(student) do %>
+        <% student.subjects.each do |subject| %>
+          <tr>
+            <td><%= student.name %></td>
+            <td><%= subject.name %></td>
+            <td><%= subject.marks %></td>
+            <td>
+              <%= image_tag 'arrow-down.png', style: "height: 25px; width: 25px;", class: "open-popup" %>
+              <div class='student-popup' style="display: none;">
+                <%= link_to 'Edit', edit_teacher_student_path(student, subject_id: subject.id) %>
+                <%= link_to 'Delete', teacher_student_path(student, subject_id: subject.id), method: :delete, data: { confirm: "Are you sure?" } %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.open-popup').on('click', function() {
+      const popup = $(this).next('.student-popup');
+      popup.toggle();
+    });
+  });
+</script>
