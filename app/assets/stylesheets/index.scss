@@ -1,3 +1,11 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
@@ -36,4 +44,178 @@ dialog img {
 
 ::backdrop{
     background: linear-gradient(to right, #ff7e5f88, #feb47b88)
+}
+
+
+
+
+//** login page **//
+
+
+.tailsWebs_wrap {
+  width: 100%;
+  height: 100vh;
+  background: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .tailsWebs_heading {
+    font-size: 30px;
+    color: red;
+  }
+
+  .tailsWebs_login {
+    width: 50%;
+    background: white;
+    padding: 80px;
+    margin-top: 20px;
+
+    .input_section {
+      margin: 14px 0px;
+
+      .input_box {
+        display: flex;
+        border: 1px solid #9b8d8d;
+        padding: 4px;
+        border-radius: 2px;
+        margin-top: 8px;
+
+        .input_img {
+          border-right: 1px solid #9b8d8d;
+          width: 22px;
+          height: auto;
+        }
+
+        .input_field {
+          border: none;
+          margin-left: 4px;
+          width: 100%;
+          padding: 0px 8px;
+
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+    }
+
+    .forget_link {
+      text-align: right;
+      color: blue;
+      text-decoration: none;
+    }
+
+    .login_wrap {
+      .login_button {
+        background: black;
+        color: white;
+        border: none;
+        padding: 15px 49px;
+        font-size: 16px;
+        margin: auto;
+        display: block;
+        margin-top: 50px;
+        width: 50%;
+      }
+    }
+  }
+}
+
+
+
+//** popup  **//
+
+
+.modal_wrap {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background: rgba(0,0,0,0.5);
+  z-index: 100;
+  top: 0;
+  left: 0;
+
+  .modal_box {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .tailsWebs_login {
+      width: 50%;
+      background: white;
+      padding: 80px;
+      margin-top: 20px;
+      position: relative;
+
+      .cross_icon {
+        position: absolute;
+        right: -21px;
+        top: -26px;
+        width: 24px;
+        height: 24px;
+        border: 2px solid black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        font-weight: 700;
+        font-size: 20px;
+        cursor: pointer
+      }
+
+      .input_section {
+        margin: 14px 0px;
+
+        .input_box {
+          display: flex;
+          border: 1px solid #9b8d8d;
+          padding: 4px;
+          border-radius: 2px;
+          margin-top: 8px;
+
+          .input_img {
+            border-right: 1px solid #9b8d8d;
+            width: 22px;
+            height: auto;
+          }
+
+          .input_field {
+            border: none;
+            margin-left: 4px;
+            width: 100%;
+            padding: 0px 8px;
+
+            &:focus {
+              outline: none;
+            }
+          }
+        }
+      }
+
+      .forget_link {
+        text-align: right;
+        color: blue;
+        text-decoration: none;
+      }
+
+      .login_wrap {
+        .login_button {
+          background: black;
+          color: white;
+          border: none;
+          padding: 15px 49px;
+          font-size: 16px;
+          margin: auto;
+          display: block;
+          margin-top: 50px;
+          width: 50%;
+        }
+      }
+    }
+  }
 }
