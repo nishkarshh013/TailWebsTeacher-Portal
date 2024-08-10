@@ -5,3 +5,10 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
+
+# Create a new teacher
+Teacher.create!(
+  name: "John Doe",
+  username: "johndoe",
+  password: "password123" # Ensure you use a secure method for password handling in production
+)

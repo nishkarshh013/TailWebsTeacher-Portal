@@ -1,4 +1,10 @@
-<h1>Welcome, <%= @teacher.name %></h1>
+<div class="main-heading">
+  <div class="tailwebs_heading">tailwebs</div>
+  <div class="main_menu_btn">
+    <%= link_to "Home", teacher_path(@teacher), class: "home_btn" %>
+    <%= link_to "Logout", logout_path, data: {turbo_method: :delete}, class: "logout_btn" %>
+  </div>
+</div>
 
 <table>
   <thead>
@@ -18,10 +24,13 @@
             <td><%= subject.name %></td>
             <td><%= subject.marks %></td>
             <td>
-              <%= image_tag 'arrow-down.png', style: "height: 25px; width: 25px;", class: "open-popup" %>
-              <div class='student-popup' style="display: none;">
-                <%= link_to 'Edit', edit_teacher_student_path(student, subject_id: subject.id) %>
-                <%= link_to 'Delete', teacher_student_path(student, subject_id: subject.id), method: :delete, data: { confirm: "Are you sure?" } %>
+              <%= image_tag 'arrow-down.png', style: "height: 35px; width: 35px;", class: "open-popup" %>
+              <div class="modal-overlay" style="display: none;">
+                <div class="student-popup">
+                  <span class="close-btn">&times;</span>
+                  <%= link_to 'Edit', edit_teacher_student_path(@teacher, student, subject_id: subject.id), style: "text-decoration: none;" %>
+                  <%= link_to 'Delete', teacher_student_path(@teacher, student, subject_id: subject.id), method: :delete, data: { confirm: "Are you sure?" }, style: "text-decoration: none;" %>
+                </div>
               </div>
             </td>
           </tr>
@@ -31,11 +40,71 @@
   </tbody>
 </table>
 
+<div>
+  <%= link_to "Add", 'javascript:;', class: "student_modal" %>
+</div>
+<%= render "students/add_student_modal" %>
+
 <script type="text/javascript">
-  $(document).ready(function() {
-    $('.open-popup').on('click', function() {
-      const popup = $(this).next('.student-popup');
-      popup.toggle();
-    });
+  function toggleModal(element, displayStyle) {
+    if (element) {
+      element.style.display = displayStyle;
+    }
+  }
+
+  function handleOpenPopup(event) {
+    const target = event.target;
+    if (target.classList.contains('open-popup')) {
+      const popupOverlay = target.nextElementSibling;
+      if (popupOverlay && popupOverlay.classList.contains('modal-overlay')) {
+        const currentDisplay = window.getComputedStyle(popupOverlay).display;
+        toggleModal(popupOverlay, currentDisplay === 'none' ? 'flex' : 'none');
+      }
+    }
+  }
+
+  function handleCloseButton(event) {
+    const target = event.target;
+    if (target.classList.contains('close-btn')) {
+      const modalOverlay = target.closest('.modal-overlay');
+      toggleModal(modalOverlay, 'none');
+    }
+  }
+
+  function handleOutsideClick(event) {
+    const target = event.target;
+    if (target.classList.contains('modal-overlay')) {
+      toggleModal(target, 'none');
+    }
+  }
+
+  function handleStudentModalTrigger(event) {
+    const target = event.target;
+    if (target.classList.contains('student_modal')) {
+      const modalWrap = document.querySelector('.modal_wrap');
+      if (modalWrap) {
+        toggleModal(modalWrap, 'block');
+      }
+    }
+  }
+
+  // Function to handle close button (cross_icon) in student modal
+  function handleCloseStudentModal(event) {
+    const target = event.target;
+    if (target.classList.contains('cross_icon')) {
+      const modalWrap = document.querySelector('.modal_wrap');
+      if (modalWrap) {
+        toggleModal(modalWrap, 'none');
+      }
+    }
+  }
+
+  // Single event listener that delegates to specific functions
+  document.body.addEventListener('click', function(event) {
+    handleOpenPopup(event);
+    handleCloseButton(event);
+    handleOutsideClick(event);
+    handleStudentModalTrigger(event);
+    handleCloseStudentModal(event);
   });
 </script>

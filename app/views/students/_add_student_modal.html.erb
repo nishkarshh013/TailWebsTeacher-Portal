@@ -1,0 +1,66 @@
+<div class="modal_wrap">
+  <div class="modal_box">
+    <div class='tailsWebs_login'>
+      <div class="cross_icon">x</div>
+      <% @student = @teacher.students.new %>
+      <% @student.subjects.build %>
+      <%= form_with(model: @student, url: teacher_students_path(@teacher), local: true) do |form| %>
+        <% if @student.errors.any? %>
+          <div class="error_explanation">
+            <h2><%= pluralize(@student.errors.count, "error") %> prohibited this student from being saved:</h2>
+            <ul>
+              <% @student.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="input_section">
+          <%= form.label :name, class: "input_label" %>
+          <div class="input_box">
+            <%= image_tag "user.png", alt: "icon", class: "input_img" %>
+            <%= form.text_field :name, class: "input_field", required: true %>
+            <% if @student.errors[:name].any? %>
+              <div class="error_message">
+                <%= @student.errors[:name].first %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <%= form.fields_for :subjects do |subject_form| %>
+          <div class="input_section">
+            <%= subject_form.label :subject, class: "input_label" %>
+            <div class="input_box">
+              <%= image_tag "bookmark.png", alt: "icon", class: "input_img" %>
+              <%= subject_form.text_field :name, class: "input_field", required: true %>
+              <% if subject_form.object.errors[:name].any? %>
+                <div class="error_message">
+                  <%= subject_form.object.errors[:name].first %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="input_section">
+            <%= subject_form.label :marks, class: "input_label" %>
+            <div class="input_box">
+              <%= image_tag "comment.png", alt: "icon", class: "input_img" %>
+              <%= subject_form.number_field :marks, class: "input_field", required: true %>
+              <% if subject_form.object.errors[:marks].any? %>
+                <div class="error_message">
+                  <%= subject_form.object.errors[:marks].first %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="login_wrap">
+          <%= form.submit "Add", class: "login_button" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

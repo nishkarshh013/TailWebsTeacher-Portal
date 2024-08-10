@@ -1,5 +1,5 @@
 <div id="student-form" >
-  <%= form_with(model: @student, url: teacher_student_path, local: false) do |form| %>
+  <%= form_with(model: @student, url: teacher_student_path, local: true) do |form| %>
     <%= form.label :name %>
     <%= form.text_field :name %>
     <%= form.hidden_field :student_id, value: @student.id if @student.present? %>
