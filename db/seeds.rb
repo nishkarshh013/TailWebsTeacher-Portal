@@ -9,6 +9,6 @@
 # Create a new teacher
 Teacher.create!(
   name: "John Doe",
-  username: "johndoe",
+  username: "admin1",
   password: "password123" # Ensure you use a secure method for password handling in production
 )

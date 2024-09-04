@@ -1,1 +1,5 @@
-<%= render 'students/form' %>
+<% if @errors.present? %>
+	<%=@errors[0]%>
+<% else %>
+	<%= render 'students/form' %>
+<% end %>

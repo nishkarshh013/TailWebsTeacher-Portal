@@ -2,50 +2,18 @@ class StudentsController < ApplicationController
   before_action :set_teacher, only: %i[create destroy]
 
   def create
-    student_name = normalize_name(student_params[:name])
-    subjects_params = student_params[:subjects_attributes]
-    
-    subjects_params = [subjects_params] unless subjects_params.is_a?(Array)
-
-    subjects_params.each do |subject_params|
-      subject_name = normalize_name(subject_params["0"][:name])
-      subject_marks = subject_params["0"][:marks].to_i
-
-      # Find existing student with the same name and subject
-      existing_student = Student.joins(:subjects)
-                                .where('LOWER(students.name) = ?', student_name.downcase)
-                                .where('LOWER(subjects.name) = ?', subject_name.downcase)
-                                .first
-
-      if existing_student
-        subject = existing_student.subjects.find_by('LOWER(name) = ?', subject_name.downcase)
-        if subject
-          subject.marks = subject_marks
-          subject.save
-        else
-          existing_student.subjects.create(name: subject_name, marks: subject_marks)
-        end
-        redirect_to teacher_path(@teacher), notice: "Marks updated successfully"
-        return
-      else
-        student = @teacher.students.create(name: student_name)
-        subjects_params.each do |subject_params|
-          subject_name = normalize_name(subject_params["0"][:name])
-          subject_marks = subject_params["0"][:marks].to_i
-          student.subjects.create(name: subject_name, marks: subject_marks)
-        end
-        redirect_to teacher_path(@teacher), notice: "Student and subjects created successfully"
-        return
-      end
-    end
-
-    # Handle the case when no existing student is found (optional)
-    redirect_to teacher_path(@teacher), alert: "Student not found"
+    subjects_params = params[:student][:subjects_attributes].values
+    student_data = Student.update_or_create_student_with_subject(student_params[:name], subjects_params, set_teacher)
+    redirect_to teacher_path(@teacher), notice: student_data[:notice]
   end
 
   def edit
+    @errors = []
     @subject = Subject.find_by(id: params[:subject_id])
     @student = @subject.student
+    unless @student.teacher.id == params[:teacher_id].to_i
+      @errors << "Youre not autherized to edit this user"
+    end
   end
 
   def update
@@ -72,9 +40,5 @@ class StudentsController < ApplicationController
 
   def student_params
     params.require(:student).permit(:name, subjects_attributes: [:id, :name, :marks, :_destroy])
-  end
-
-  def normalize_name(name)
-    name.to_s.strip.downcase
   end
 end

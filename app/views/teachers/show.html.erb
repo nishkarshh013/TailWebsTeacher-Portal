@@ -5,7 +5,9 @@
     <%= link_to "Logout", logout_path, data: {turbo_method: :delete}, class: "logout_btn" %>
   </div>
 </div>
-
+<% if notice.present? %>
+  <%= notice %>
+<% end %>
 <table>
   <thead>
     <tr>
